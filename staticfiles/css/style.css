@@ -1,0 +1,121 @@
+/* ============================
+   Global Styles
+============================ */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Overlay for dark backgrounds */
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ============================
+   Buttons
+============================ */
+.btn-primary,
+.btn-success {
+  border-radius: 50px;
+  padding: 10px 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================
+   Landing Page
+============================ */
+.content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.content p {
+  color: #e0e0e0;
+  font-size: 1.2rem;
+}
+
+/* ============================
+   Login & Signup Pages
+============================ */
+.login-container,
+.signup-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+}
+
+.login-container h3,
+.signup-container h3 {
+  color: #222;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* ============================
+   Dashboard
+============================ */
+.navbar {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.content {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-top: 3rem;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table thead th {
+  background-color: #212529 !important;
+  color: white;
+  text-align: center;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* ============================
+   Responsive
+============================ */
+@media (max-width: 768px) {
+  .content h1 {
+    font-size: 2rem;
+  }
+
+  .login-container,
+  .signup-container {
+    width: 90%;
+  }
+
+  .table {
+    font-size: 0.9rem;
+  }
+}

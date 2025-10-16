@@ -1,0 +1,287 @@
+{% extends 'yearbook/base.html' %}
+{% load static %}
+{% block title %}Sign Up - School Yearbook{% endblock %}
+{% block content %}
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+    background: url("{% static 'images/main page backgroud.png' %}") no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+  }
+  
+  .signup-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+  
+  /* Abstract curved shapes overlay */
+  .curved-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+  }
+  
+  .shape-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    background: linear-gradient(135deg, #282C50 0%, #282C50 40%, transparent 70%);
+    clip-path: ellipse(120% 80% at 50% 0%);
+  }
+  
+  .shape-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    background: linear-gradient(45deg, #282C50 0%, #282C50 40%, transparent 70%);
+    clip-path: ellipse(120% 80% at 50% 100%);
+  }
+  
+  .shape-top-yellow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    background: linear-gradient(135deg, #FDD835 0%, #FDD835 30%, transparent 60%);
+    clip-path: ellipse(110% 60% at 50% 0%);
+  }
+  
+  .shape-bottom-yellow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 25%;
+    background: linear-gradient(45deg, #FDD835 0%, #FDD835 30%, transparent 60%);
+    clip-path: ellipse(110% 60% at 50% 100%);
+  }
+  
+  /* School seal/logo */
+  .school-seal {
+    position: absolute;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 250px;
+    height: 250px;
+    z-index: 3;
+    opacity: 0.8;
+  }
+  
+  /* Signup form */
+  .signup-form-container {
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #000000;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 4;
+    backdrop-filter: blur(10px);
+  }
+  
+  .form-title {
+    font-size: 48px;
+    font-weight: bold;
+    color: #FF8C00;
+    text-align: center;
+    margin: 0 0 15px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tagline {
+    text-align: center;
+    margin-bottom: 15px;
+    line-height: 1.4;
+  }
+  
+  .tagline-bold {
+    font-weight: bold;
+    color: #2C3E50;
+    font-size: 16px;
+  }
+  
+  .tagline-italic {
+    font-style: italic;
+    color: #3498DB;
+    font-size: 14px;
+  }
+  
+  .tagline-bold-end {
+    font-weight: bold;
+    color: #2C3E50;
+    font-size: 16px;
+  }
+  
+  .subtitle {
+    text-align: center;
+    color: #2C3E50;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 25px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .form-row .form-input {
+    flex: 1;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #E3F2FD;
+    font-size: 14px;
+    color: #2C3E50;
+    box-sizing: border-box;
+  }
+  
+  .form-input::placeholder {
+    color: #2C3E50;
+    font-weight: 500;
+  }
+  
+  .form-input:focus {
+    outline: none;
+    background: #BBDEFB;
+    box-shadow: 0 0 10px rgba(66, 165, 245, 0.3);
+  }
+  
+  .continue-btn {
+    width: 100%;
+    padding: 15px;
+    background: #2C3E50;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+  }
+  
+  .continue-btn:hover {
+    background: #34495E;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .signin-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #2C3E50;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  .signin-link .signin-text {
+    color: #3498DB;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+  .signin-link:hover {
+    text-decoration: none;
+  }
+  
+  .signin-link:hover .signin-text {
+    color: #2980B9;
+  }
+  
+</style>
+
+<div class="signup-container">
+  <!-- Abstract curved shapes overlay -->
+  <div class="curved-shapes">
+    <div class="shape-top"></div>
+    <div class="shape-top-yellow"></div>
+    <div class="shape-bottom"></div>
+    <div class="shape-bottom-yellow"></div>
+  </div>
+  
+  <!-- School seal/logo -->
+  <img src="{% static 'images/Logo.png' %}" alt="College Logo" class="school-seal">
+  
+  <!-- Signup form -->
+  <div class="signup-form-container">
+    <h1 class="form-title">JOIN US!</h1>
+    
+    <div class="tagline">
+      <div class="tagline-bold">You've lived it.</div>
+      <div class="tagline-italic">Now Let's Keep It.</div>
+      <div class="tagline-bold-end">Treasure it.</div>
+    </div>
+    
+    <div class="subtitle">Create an account</div>
+    
+    <form method="POST">
+      {% csrf_token %}
+      
+      <div class="form-row">
+        <input type="text" class="form-input" name="first_name" placeholder="First Name" required>
+        <input type="text" class="form-input" name="middle_name" placeholder="Middle Name">
+      </div>
+      
+      <div class="form-group">
+        <input type="text" class="form-input" name="last_name" placeholder="Last Name" required>
+      </div>
+      
+      <div class="form-group">
+        <input type="text" class="form-input" name="school_id" placeholder="School ID" required>
+      </div>
+      
+      <div class="form-group">
+        <input type="email" class="form-input" name="email" placeholder="Email" required>
+      </div>
+      
+      <div class="form-group">
+        <input type="password" class="form-input" name="password1" placeholder="Password" required>
+      </div>
+      
+      <div class="form-group">
+        <input type="password" class="form-input" name="password2" placeholder="Confirm Password" required>
+      </div>
+      
+      <div class="form-group">
+        <input type="text" class="form-input" name="school_role" placeholder="School Role (e.g. Student, Teacher, Admin)" required>
+      </div>
+      
+      <button type="submit" class="continue-btn">Continue</button>
+    </form>
+    
+    <a href="{% url 'login' %}" class="signin-link">
+      Already have an account? <span class="signin-text">Sign in</span>
+    </a>
+  </div>
+</div>
+{% endblock %}
