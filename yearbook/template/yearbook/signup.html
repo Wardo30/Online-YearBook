@@ -19,195 +19,147 @@
     height: 100vh;
   }
   
-  /* Abstract curved shapes overlay */
-  .curved-shapes {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+  
+  /* Main content area */
+  .main-content {
+    position: relative;
     z-index: 2;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px;
   }
   
-  .shape-top {
-    position: absolute;
-    top: 0;
-    left: 0;
+  /* White signup card */
+  .signup-card {
+    background: white;
+    border-radius: 20px;
+    padding: 50px 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     width: 100%;
-    height: 25%;
-    background: linear-gradient(135deg, #282C50 0%, #282C50 40%, transparent 70%);
-    clip-path: ellipse(120% 80% at 50% 0%);
-  }
-  
-  .shape-bottom {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 25%;
-    background: linear-gradient(45deg, #282C50 0%, #282C50 40%, transparent 70%);
-    clip-path: ellipse(120% 80% at 50% 100%);
-  }
-  
-  .shape-top-yellow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 25%;
-    background: linear-gradient(135deg, #FDD835 0%, #FDD835 30%, transparent 60%);
-    clip-path: ellipse(110% 60% at 50% 0%);
-  }
-  
-  .shape-bottom-yellow {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 25%;
-    background: linear-gradient(45deg, #FDD835 0%, #FDD835 30%, transparent 60%);
-    clip-path: ellipse(110% 60% at 50% 100%);
-  }
-  
-  /* School seal/logo */
-  .school-seal {
-    position: absolute;
-    right: -50px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 250px;
-    height: 250px;
-    z-index: 3;
-    opacity: 0.8;
-  }
-  
-  /* Signup form */
-  .signup-form-container {
-    position: absolute;
-    top: 50%;
-    left: 45%;
-    transform: translate(-50%, -50%);
-    width: 420px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid #000000;
-    border-radius: 15px;
-    padding: 40px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    z-index: 4;
-    backdrop-filter: blur(10px);
-  }
-  
-  .form-title {
-    font-size: 48px;
-    font-weight: bold;
-    color: #FF8C00;
+    max-width: 500px;
     text-align: center;
-    margin: 0 0 15px 0;
+  }
+  
+  /* School logo */
+  .school-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 8px solid white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    margin: 0 auto 30px auto;
+    display: block;
+    object-fit: cover;
+  }
+  
+  /* Join us title */
+  .join-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #ff8c00;
+    margin: 0 0 20px 0;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   }
   
+  /* Tagline */
   .tagline {
-    text-align: center;
-    margin-bottom: 15px;
-    line-height: 1.4;
+    margin-bottom: 20px;
+    line-height: 1.6;
   }
   
-  .tagline-bold {
-    font-weight: bold;
-    color: #2C3E50;
-    font-size: 16px;
-  }
-  
-  .tagline-italic {
-    font-style: italic;
-    color: #3498DB;
-    font-size: 14px;
-  }
-  
-  .tagline-bold-end {
-    font-weight: bold;
-    color: #2C3E50;
-    font-size: 16px;
-  }
-  
-  .subtitle {
-    text-align: center;
-    color: #2C3E50;
+  .tagline-line {
     font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 25px;
+    margin: 5px 0;
   }
   
+  .tagline-grey { color: #666; }
+  .tagline-blue { color: #5da2f2; font-weight: 600; }
+  
+  /* Create account text */
+  .create-account {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  
+  /* Form layout */
   .form-row {
     display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 15px;
+    margin-bottom: 20px;
   }
   
-  .form-row .form-input {
+  .form-row .form-input:first-child {
+    flex: 2;
+  }
+  
+  .form-row .form-input:last-child {
     flex: 1;
   }
   
   .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
   
   .form-input {
     width: 100%;
-    padding: 12px;
+    padding: 18px 20px;
     border: none;
-    border-radius: 8px;
-    background: #E3F2FD;
-    font-size: 14px;
-    color: #2C3E50;
+    border-radius: 12px;
+    background: #f5f5f5;
+    font-size: 16px;
+    color: #333;
     box-sizing: border-box;
+    transition: all 0.3s ease;
   }
   
   .form-input::placeholder {
-    color: #2C3E50;
+    color: #999;
     font-weight: 500;
   }
   
   .form-input:focus {
     outline: none;
-    background: #BBDEFB;
-    box-shadow: 0 0 10px rgba(66, 165, 245, 0.3);
+    background: #e8f4fd;
+    box-shadow: 0 0 0 3px rgba(93, 162, 242, 0.2);
   }
   
+  /* Continue button */
   .continue-btn {
     width: 100%;
-    padding: 15px;
-    background: #2C3E50;
+    padding: 18px;
+    background: #1f2253;
     color: white;
     border: none;
-    border-radius: 25px;
+    border-radius: 12px;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 15px;
+    margin-top: 10px;
   }
   
   .continue-btn:hover {
-    background: #34495E;
+    background: #2a2f6b;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(31, 34, 83, 0.3);
   }
   
+  /* Sign in link */
   .signin-link {
     display: block;
     text-align: center;
-    margin-top: 20px;
-    color: #2C3E50;
+    margin-top: 25px;
+    color: #666;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 16px;
   }
   
   .signin-link .signin-text {
-    color: #3498DB;
-    font-weight: bold;
-    text-decoration: underline;
+    color: #5da2f2;
+    font-weight: 600;
   }
   
   .signin-link:hover {
@@ -215,73 +167,85 @@
   }
   
   .signin-link:hover .signin-text {
-    color: #2980B9;
+    color: #4a8bc7;
   }
   
+  /* Responsive */
+  @media (max-width: 768px) {
+    .signup-card {
+      padding: 40px 30px;
+      margin: 0 20px;
+    }
+    
+    .join-title {
+      font-size: 36px;
+    }
+    
+    .tagline-line {
+      font-size: 16px;
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
 </style>
 
 <div class="signup-container">
-  <!-- Abstract curved shapes overlay -->
-  <div class="curved-shapes">
-    <div class="shape-top"></div>
-    <div class="shape-top-yellow"></div>
-    <div class="shape-bottom"></div>
-    <div class="shape-bottom-yellow"></div>
-  </div>
-  
-  <!-- School seal/logo -->
-  <img src="{% static 'images/Logo.png' %}" alt="College Logo" class="school-seal">
-  
-  <!-- Signup form -->
-  <div class="signup-form-container">
-    <h1 class="form-title">JOIN US!</h1>
-    
-    <div class="tagline">
-      <div class="tagline-bold">You've lived it.</div>
-      <div class="tagline-italic">Now Let's Keep It.</div>
-      <div class="tagline-bold-end">Treasure it.</div>
+  <div class="main-content">
+    <div class="signup-card">
+      <img src="{% static 'images/Logo.png' %}" alt="College Logo" class="school-logo">
+      
+      <h1 class="join-title">JOIN US!</h1>
+      
+      <div class="tagline">
+        <div class="tagline-line tagline-grey">You've lived it.</div>
+        <div class="tagline-line tagline-blue">Now Let's Keep It.</div>
+        <div class="tagline-line tagline-grey">Treasure it.</div>
+      </div>
+      
+      <div class="create-account">Create an account</div>
+      
+      <form method="POST">
+        {% csrf_token %}
+        
+        <div class="form-row">
+          <input type="text" class="form-input" name="first_name" placeholder="First Name" required>
+          <input type="text" class="form-input" name="middle_name" placeholder="Middle Name">
+        </div>
+        
+        <div class="form-group">
+          <input type="text" class="form-input" name="last_name" placeholder="Last Name" required>
+        </div>
+        
+        <div class="form-group">
+          <input type="text" class="form-input" name="school_id" placeholder="School ID" required>
+        </div>
+        
+        <div class="form-group">
+          <input type="email" class="form-input" name="email" placeholder="Email" required>
+        </div>
+        
+        <div class="form-group">
+          <input type="password" class="form-input" name="password1" placeholder="Password" required>
+        </div>
+        
+        <div class="form-group">
+          <input type="password" class="form-input" name="password2" placeholder="Confirm Password" required>
+        </div>
+        
+        <div class="form-group">
+          <input type="text" class="form-input" name="school_role" placeholder="School Role (e.g. Student, Teacher, Admin)" required>
+        </div>
+        
+        <button type="submit" class="continue-btn">Continue</button>
+      </form>
+      
+      <a href="{% url 'login' %}" class="signin-link">
+        Already have an account? <span class="signin-text">Sign in</span>
+      </a>
     </div>
-    
-    <div class="subtitle">Create an account</div>
-    
-    <form method="POST">
-      {% csrf_token %}
-      
-      <div class="form-row">
-        <input type="text" class="form-input" name="first_name" placeholder="First Name" required>
-        <input type="text" class="form-input" name="middle_name" placeholder="Middle Name">
-      </div>
-      
-      <div class="form-group">
-        <input type="text" class="form-input" name="last_name" placeholder="Last Name" required>
-      </div>
-      
-      <div class="form-group">
-        <input type="text" class="form-input" name="school_id" placeholder="School ID" required>
-      </div>
-      
-      <div class="form-group">
-        <input type="email" class="form-input" name="email" placeholder="Email" required>
-      </div>
-      
-      <div class="form-group">
-        <input type="password" class="form-input" name="password1" placeholder="Password" required>
-      </div>
-      
-      <div class="form-group">
-        <input type="password" class="form-input" name="password2" placeholder="Confirm Password" required>
-      </div>
-      
-      <div class="form-group">
-        <input type="text" class="form-input" name="school_role" placeholder="School Role (e.g. Student, Teacher, Admin)" required>
-      </div>
-      
-      <button type="submit" class="continue-btn">Continue</button>
-    </form>
-    
-    <a href="{% url 'login' %}" class="signin-link">
-      Already have an account? <span class="signin-text">Sign in</span>
-    </a>
   </div>
 </div>
 {% endblock %}

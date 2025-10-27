@@ -15,6 +15,71 @@ def landing(request):
     return render(request, 'yearbook/landing.html')
 
 
+def about(request):
+    return render(request, 'yearbook/about.html')
+
+
+@login_required
+def profile(request):
+    # Get current user's student profile
+    try:
+        student_profile = Student.objects.get(user=request.user)
+    except Student.DoesNotExist:
+        student_profile = None
+    
+    # Handle profile updates
+    if request.method == 'POST':
+        # Update user information
+        user = request.user
+        user.first_name = request.POST.get('first_name', user.first_name)
+        user.last_name = request.POST.get('last_name', user.last_name)
+        user.email = request.POST.get('email', user.email)
+        user.save()
+        
+        # Update or create student profile
+        if student_profile:
+            student_profile.middle_name = request.POST.get('middle_name', student_profile.middle_name)
+            student_profile.school_id = request.POST.get('school_id', student_profile.school_id)
+            student_profile.department = request.POST.get('department', student_profile.department)
+            student_profile.year = request.POST.get('year', student_profile.year)
+            student_profile.block = request.POST.get('block', student_profile.block)
+            student_profile.section = request.POST.get('section', student_profile.section)
+            student_profile.achievements = request.POST.get('achievements', student_profile.achievements)
+            
+            # Handle profile photo upload
+            if 'profile_photo' in request.FILES:
+                student_profile.profile_photo = request.FILES['profile_photo']
+            
+            student_profile.save()
+        else:
+            # Create new student profile
+            student_profile = Student.objects.create(
+                user=user,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                middle_name=request.POST.get('middle_name', ''),
+                school_id=request.POST.get('school_id', ''),
+                email=user.email,
+                department=request.POST.get('department', 'BSIT'),
+                year=request.POST.get('year', '2025'),
+                block=request.POST.get('block', 'A'),
+                section=request.POST.get('section', '1'),
+                achievements=request.POST.get('achievements', ''),
+                profile_photo=request.FILES.get('profile_photo')
+            )
+        
+        messages.success(request, 'Profile updated successfully!')
+        return redirect('profile')
+    
+    context = {
+        'student_profile': student_profile,
+        'departments': Student.DEPARTMENTS,
+        'years': Student.YEARS,
+    }
+    
+    return render(request, 'yearbook/profile.html', context)
+
+
 def signup_view(request):
     # Custom handler to match the visual design fields on the template
     if request.method == 'POST':

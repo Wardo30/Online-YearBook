@@ -11,23 +11,25 @@
       margin: 0;
       padding: 0;
       font-family: Arial, sans-serif;
-      background: #2C3E50;
+      background: #1f2253;
       min-height: 100vh;
     }
     
-    /* Header */
+    /* Yellow Header */
     .header {
-      background: #2C3E50;
-      padding: 20px 40px;
+      background: #ffd700;
+      padding: 15px 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 2px solid #FDD835;
     }
     
     .logo {
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     
     .search-bar {
@@ -37,6 +39,7 @@
       border-radius: 25px;
       padding: 8px 20px;
       min-width: 400px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     
     .search-input {
@@ -51,6 +54,7 @@
       width: 20px;
       height: 20px;
       margin-left: 10px;
+      color: #666;
     }
     
     .nav-links {
@@ -59,15 +63,26 @@
     }
     
     .nav-link {
-      color: white;
+      color: #1f2253;
       text-decoration: none;
       font-weight: bold;
       font-size: 16px;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
+      position: relative;
     }
     
     .nav-link:hover {
-      color: #FDD835;
+      color: #1f2253;
+    }
+    
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #1f2253;
     }
     
     /* Main Content */
@@ -102,8 +117,8 @@
     }
     
     .btn-find-section {
-      background: #FDD835;
-      color: #2C3E50;
+      background: #ffd700;
+      color: #1f2253;
       border: none;
       padding: 12px 30px;
       border-radius: 8px;
@@ -114,12 +129,12 @@
     }
     
     .btn-find-section:hover {
-      background: #FFEB3B;
+      background: #ffeb3b;
       transform: translateY(-2px);
     }
     
     .btn-explore-all {
-      background: #3498DB;
+      background: #5da2f2;
       color: white;
       border: none;
       padding: 12px 30px;
@@ -131,7 +146,7 @@
     }
     
     .btn-explore-all:hover {
-      background: #2980B9;
+      background: #4a8bc7;
       transform: translateY(-2px);
     }
     
@@ -140,7 +155,7 @@
       height: 250px;
       border-radius: 15px;
       object-fit: cover;
-      border: 3px solid #FDD835;
+      border: 3px solid #ffd700;
     }
     
     /* Recent Searches Section */
@@ -206,7 +221,7 @@
     }
     
     .view-all:hover {
-      color: #FDD835;
+      color: #ffd700;
     }
     
     .album-buttons {
@@ -216,9 +231,9 @@
     }
     
     .album-btn {
-      background: #2C3E50;
+      background: #2a2f6b;
       color: white;
-      border: 2px solid #34495E;
+      border: none;
       padding: 12px 25px;
       border-radius: 8px;
       font-weight: bold;
@@ -228,9 +243,8 @@
     }
     
     .album-btn:hover {
-      background: #34495E;
-      border-color: #FDD835;
-      color: #FDD835;
+      background: #1f2253;
+      transform: translateY(-2px);
     }
     
     /* Filter Section */
@@ -262,50 +276,76 @@
       cursor: pointer;
     }
     
-    /* Search Results */
-    .search-results {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 30px;
-      margin-top: 30px;
+    /* Student Cards Grid */
+    .students-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
     }
     
     .student-card {
       background: white;
-      border-radius: 10px;
+      border-radius: 15px;
       padding: 20px;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .student-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     }
     
     .student-photo {
-      width: 60px;
-      height: 60px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid #3498DB;
+      margin: 0 auto 15px auto;
+      display: block;
+      border: 3px solid #ffd700;
     }
     
-    .student-info h5 {
-      margin: 0;
-      color: #2C3E50;
-      font-size: 18px;
-    }
-    
-    .student-info p {
-      margin: 5px 0 0 0;
-      color: #7F8C8D;
+    .student-name {
+      background: #ffd700;
+      color: #1f2253;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: bold;
       font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
     }
     
-    .no-results {
+    .student-name:hover {
+      background: #ffeb3b;
+    }
+    
+    .student-department {
+      color: #666;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+    
+    .view-more {
       text-align: center;
+      margin-top: 30px;
+    }
+    
+    .view-more-link {
       color: white;
-      font-size: 18px;
-      padding: 40px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    .view-more-link:hover {
+      color: #ffd700;
     }
     
     /* Responsive */
@@ -337,6 +377,11 @@
       .filter-row {
         justify-content: center;
       }
+      
+      .students-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+      }
     }
   </style>
 </head>
@@ -353,9 +398,9 @@
     </div>
     
     <nav class="nav-links">
-      <a href="#" class="nav-link">HOME</a>
-      <a href="#" class="nav-link">ABOUT US</a>
-      <a href="#" class="nav-link">PROFILE</a>
+      <a href="{% url 'student_dashboard' %}" class="nav-link active">HOME</a>
+      <a href="{% url 'about' %}" class="nav-link">ABOUT US</a>
+      <a href="{% url 'profile' %}" class="nav-link">PROFILE</a>
       <a href="{% url 'logout' %}" class="nav-link">LOGOUT</a>
     </nav>
   </header>
@@ -375,7 +420,7 @@
       {% if student_profile and student_profile.profile_photo %}
         <img src="{{ student_profile.profile_photo.url }}" alt="Profile Photo" class="profile-photo">
       {% else %}
-        <div class="profile-photo" style="background: linear-gradient(135deg, #3498DB, #2980B9); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
+        <div class="profile-photo" style="background: linear-gradient(135deg, #5da2f2, #4a8bc7); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
           {{ user.first_name.0|default:user.username.0|upper }}
         </div>
       {% endif %}
@@ -458,70 +503,64 @@
       </div>
     </div>
 
-    <!-- Search Results -->
-    {% if search_query or department or year or block or section %}
-      <div class="search-results">
-        <h3 style="color: white; margin-bottom: 20px;">
-          Search Results 
-          {% if search_query %}- "{{ search_query }}"{% endif %}
-          {% if students.paginator.count %}({{ students.paginator.count }} found){% endif %}
-        </h3>
-        
-        {% if students %}
-          {% for student in students %}
-            <div class="student-card">
-              {% if student.profile_photo %}
-                <img src="{{ student.profile_photo.url }}" alt="{{ student.full_name }}" class="student-photo">
-              {% else %}
-                <div class="student-photo" style="background: linear-gradient(135deg, #3498DB, #2980B9); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
-                  {{ student.first_name.0 }}{{ student.last_name.0 }}
-                </div>
-              {% endif %}
-              <div class="student-info">
-                <h5>{{ student.full_name }}</h5>
-                <p>{{ student.department }} - {{ student.year }} | Block {{ student.block }} | Section {{ student.section }}</p>
-                <p>ID: {{ student.school_id }} | {{ student.email }}</p>
+    <!-- Student Cards Grid -->
+    {% if students %}
+      <div class="students-grid">
+        {% for student in students %}
+          <div class="student-card" onclick="viewStudent({{ student.id }})">
+            {% if student.profile_photo %}
+              <img src="{{ student.profile_photo.url }}" alt="{{ student.full_name }}" class="student-photo">
+            {% else %}
+              <div class="student-photo" style="background: linear-gradient(135deg, #5da2f2, #4a8bc7); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">
+                {{ student.first_name.0 }}{{ student.last_name.0 }}
               </div>
-            </div>
-          {% endfor %}
-          
-          <!-- Pagination -->
-          {% if students.has_other_pages %}
-            <div style="display: flex; justify-content: center; margin-top: 30px;">
-              <nav>
-                <ul class="pagination">
-                  {% if students.has_previous %}
-                    <li class="page-item">
-                      <a class="page-link" href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if department %}department={{ department }}&{% endif %}{% if year %}year={{ year }}&{% endif %}{% if block %}block={{ block }}&{% endif %}{% if section %}section={{ section }}&{% endif %}page={{ students.previous_page_number }}">Previous</a>
-                    </li>
-                  {% endif %}
-                  
-                  {% for num in students.paginator.page_range %}
-                    {% if students.number == num %}
-                      <li class="page-item active">
-                        <span class="page-link">{{ num }}</span>
-                      </li>
-                    {% else %}
-                      <li class="page-item">
-                        <a class="page-link" href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if department %}department={{ department }}&{% endif %}{% if year %}year={{ year }}&{% endif %}{% if block %}block={{ block }}&{% endif %}{% if section %}section={{ section }}&{% endif %}page={{ num }}">{{ num }}</a>
-                      </li>
-                    {% endif %}
-                  {% endfor %}
-                  
-                  {% if students.has_next %}
-                    <li class="page-item">
-                      <a class="page-link" href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if department %}department={{ department }}&{% endif %}{% if year %}year={{ year }}&{% endif %}{% if block %}block={{ block }}&{% endif %}{% if section %}section={{ section }}&{% endif %}page={{ students.next_page_number }}">Next</a>
-                    </li>
-                  {% endif %}
-                </ul>
-              </nav>
-            </div>
-          {% endif %}
-        {% else %}
-          <div class="no-results">
-            <p>No students found matching your search criteria.</p>
+            {% endif %}
+            <button class="student-name" onclick="event.stopPropagation(); viewStudent({{ student.id }})">{{ student.full_name }}</button>
+            <div class="student-department">{{ student.get_department_display }}</div>
           </div>
-        {% endif %}
+        {% endfor %}
+      </div>
+      
+      <!-- View More Link -->
+      <div class="view-more">
+        <a href="#" class="view-more-link">View More Classmates</a>
+      </div>
+      
+      <!-- Pagination -->
+      {% if students.has_other_pages %}
+        <div style="display: flex; justify-content: center; margin-top: 30px;">
+          <nav>
+            <ul class="pagination">
+              {% if students.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if department %}department={{ department }}&{% endif %}{% if year %}year={{ year }}&{% endif %}{% if block %}block={{ block }}&{% endif %}{% if section %}section={{ section }}&{% endif %}page={{ students.previous_page_number }}">Previous</a>
+                </li>
+              {% endif %}
+              
+              {% for num in students.paginator.page_range %}
+                {% if students.number == num %}
+                  <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if department %}department={{ department }}&{% endif %}{% if year %}year={{ year }}&{% endif %}{% if block %}block={{ block }}&{% endif %}{% if section %}section={{ section }}&{% endif %}page={{ num }}">{{ num }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+              
+              {% if students.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if department %}department={{ department }}&{% endif %}{% if year %}year={{ year }}&{% endif %}{% if block %}block={{ block }}&{% endif %}{% if section %}section={{ section }}&{% endif %}page={{ students.next_page_number }}">Next</a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      {% endif %}
+    {% else %}
+      <div style="text-align: center; color: white; font-size: 18px; padding: 40px;">
+        <p>No students found matching your search criteria.</p>
       </div>
     {% endif %}
   </div>
@@ -592,6 +631,12 @@
       else currentUrl.searchParams.delete('section');
       
       window.location.href = currentUrl.toString();
+    }
+
+    function viewStudent(studentId) {
+      // For now, just show an alert. You can implement a modal or redirect to student detail page
+      alert('Viewing student with ID: ' + studentId);
+      // You can implement: window.location.href = '/student/' + studentId + '/';
     }
   </script>
 </body>

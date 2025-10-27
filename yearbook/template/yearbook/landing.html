@@ -9,194 +9,130 @@
     overflow-x: hidden;
     font-family: Arial, sans-serif;
   }
-  
+
   .landing-container {
     position: relative;
     width: 100%;
     height: 100vh;
-    background: url("{% static 'images/Landing page background.png' %}") no-repeat center center;
-    background-size: cover;
+    background-color: #5da2f2; /* Light blue background */
+    overflow: hidden;
   }
-  
-  /* Abstract curved shapes overlay */
-  .curved-shapes {
+
+  /* Dark navy top and bottom strips */
+  .top-strip,
+  .bottom-strip {
     position: absolute;
-    top: 0;
     left: 0;
     width: 100%;
-    height: 40%;
-    pointer-events: none;
-    z-index: 2;
-  }
-  
-  .shape-top {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #282C50 0%, #282C50 40%, transparent 70%);
-    clip-path: ellipse(120% 80% at 50% 0%);
-  }
-  
-  .shape-bottom {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #FDD835 0%, #FDD835 30%, transparent 60%);
-    clip-path: ellipse(110% 60% at 50% 0%);
-  }
-  
-  /* Semi-transparent overlay for text readability */
-  .text-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(40, 44, 80, 0.6);
+    height: 80px;
+    background-color: #1f2253; /* Deep navy */
     z-index: 1;
   }
-  
+
+  .top-strip { top: 0; }
+  .bottom-strip { bottom: 0; }
+
+  /* Main content */
   .content-wrapper {
     position: relative;
-    display: flex;
+    z-index: 2;
     height: 100%;
+    display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 5%;
-    z-index: 3;
+    justify-content: center;
+    gap: 40px;
+    padding: 0 60px;
   }
-  
+
+  /* Logo */
   .school-logo {
-    width: 200px;
-    height: 200px;
-    margin-right: 50px;
-    z-index: 4;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    border: 12px solid #ffffff;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    object-fit: cover;
   }
-  
+
+  /* Text block */
   .text-content {
-    text-align: center;
-    flex-grow: 1;
-    margin-left: 50px;
+    max-width: 800px;
   }
-  
+
   .main-title {
-    font-size: 80px;
-    font-weight: bold;
-    line-height: 1;
-    margin: 0 0 20px 0;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 120px;
+    font-weight: 800;
+    line-height: 0.9;
+    margin: 0 0 24px 0;
   }
-  
-  .school-title {
-    color: #FDD835; /* Bright yellow */
+
+  .school-title { color: #ffd23f; display: block; }
+  .yearbook-title { color: #d5e8ff; display: block; }
+
+  .tagline {
+    color: #ffffff;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin: 10px 0 12px 0;
   }
-  
-  .yearbook-title {
-    color: #E3F2FD; /* Light blue/white */
+
+  .subtag {
+    color: #ffffff;
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0 0 34px 0;
   }
-  
+
   .get-started-btn {
     display: inline-block;
-    margin-top: 30px;
-    padding: 15px 40px;
-    background: linear-gradient(to right, #FDD835, #9C27B0);
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
+    padding: 20px 42px;
+    background-color: #ffbf33; /* Button yellow */
+    color: #1f2253; /* Navy text */
+    font-size: 26px;
+    font-weight: 800;
     text-decoration: none;
-    border-radius: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 18px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border: 3px solid rgba(0,0,0,0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
-  
+
   .get-started-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(to right, #9C27B0, #FDD835);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.28);
   }
-  
-  .footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 120px;
-    background-color: #282C50;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 50px;
-    z-index: 4;
+
+  /* Responsiveness */
+  @media (max-width: 1200px) {
+    .main-title { font-size: 86px; }
+    .tagline, .subtag { font-size: 28px; }
+    .school-logo { width: 340px; height: 340px; }
   }
-  
-  .year-display {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+
+  @media (max-width: 768px) {
+    .content-wrapper { flex-direction: column; gap: 24px; text-align: center; }
+    .text-content { max-width: 100%; }
+    .main-title { font-size: 64px; }
+    .tagline, .subtag { font-size: 22px; }
   }
-  
-  .year-number {
-    font-size: 48px;
-    font-weight: bold;
-    line-height: 0.8;
-    margin: 0;
-  }
-  
-  .college-info {
-    text-align: center;
-    flex-grow: 1;
-  }
-  
-  .college-name {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0;
-  }
-  
-  .college-address {
-    font-size: 16px;
-    margin: 5px 0 0;
-  }
-  
 </style>
 
 <div class="landing-container">
-  <!-- Abstract curved shapes overlay -->
-  <div class="curved-shapes">
-    <div class="shape-top"></div>
-    <div class="shape-bottom"></div>
-  </div>
-  
-  <!-- Semi-transparent overlay for text readability -->
-  <div class="text-overlay"></div>
-  
+  <div class="top-strip"></div>
+  <div class="bottom-strip"></div>
+
   <div class="content-wrapper">
     <img src="{% static 'images/Logo.png' %}" alt="College Logo" class="school-logo">
     <div class="text-content">
       <div class="main-title">
-        <div class="school-title">SCHOOL</div>
-        <div class="yearbook-title">YEAR BOOK</div>
+        <span class="school-title">SCHOOL</span>
+        <span class="yearbook-title">YEAR BOOK</span>
       </div>
+      <div class="tagline">Relive your memories.</div>
+      <div class="subtag">One click away.</div>
       <a href="{% url 'login' %}" class="get-started-btn">Get Started</a>
     </div>
   </div>
-  
-  <div class="footer">
-    <div class="year-display">
-      <div class="year-number">20</div>
-      <div class="year-number">25</div>
-    </div>
-    <div class="college-info">
-      <h2 class="college-name">CONSOLATRIX COLLEGE OF TOLEDO CITY, INC.</h2>
-      <p class="college-address">MAGSAYSAY HILLS, POBLACION, TOLEDO CITY, CEBU, PHILIPPINES</p>
-    </div>
-  </div>
-  
 </div>
 {% endblock %}
