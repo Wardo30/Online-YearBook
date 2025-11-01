@@ -40,6 +40,44 @@ class Student(models.Model):
     def __str__(self):
         return f"{self.full_name} ({self.department}-{self.year})"
 
+class Album(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    department = models.CharField(max_length=10, choices=Student.DEPARTMENTS)
+    year = models.CharField(max_length=4, choices=Student.YEARS)
+    cover_photo = models.ImageField(upload_to='albums/covers/', null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ['department', 'year']
+
+    def __str__(self):
+        return f"{self.title} ({self.department}-{self.year})"
+
+    @property
+    def photo_count(self):
+        return self.photos.count()
+
+class Photo(models.Model):
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='photos')
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True, blank=True)
+    image = models.ImageField(upload_to='albums/photos/')
+    caption = models.CharField(max_length=300, blank=True)
+    is_featured = models.BooleanField(default=False)
+    uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-is_featured', '-created_at']
+
+    def __str__(self):
+        if self.student:
+            return f"{self.student.full_name} - {self.album.title}"
+        return f"Photo - {self.album.title}"
+
 class SearchHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     search_query = models.CharField(max_length=255)

@@ -1,0 +1,86 @@
+{% extends 'yearbook/base.html' %}
+{% load static %}
+{% block title %}Search Results - School Yearbook{% endblock %}
+{% block content %}
+<style>
+  body { background: #1f2253; font-family: 'Roboto', sans-serif; }
+  .header { background: #ffd700; padding: 15px 40px; display: flex; gap: 20px; align-items: center; }
+  .logo { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #fff; }
+  .search-container { flex: 1; }
+  .search-bar { display: flex; align-items: center; background: #fff; border-radius: 25px; padding: 8px 15px; width: 100%; }
+  .search-input { border: none; outline: none; flex: 1; font-size: 16px; padding: 8px 12px; }
+  .search-btn { background: #FFD233; color: #1E1E6F; border: none; border-radius: 20px; padding: 8px 16px; font-weight: 500; cursor: pointer; }
+  .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+  .section-title { color: #fff; font-size: 24px; font-weight: bold; margin: 24px 0 12px; }
+  .albums-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .album-card { background: #fff; border-radius: 12px; padding: 16px; text-decoration: none; color: inherit; }
+  .album-cover { width: 100%; height: 160px; border-radius: 8px; background: #87CEEB; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: bold; }
+  .album-title { color: #1E1E6F; font-weight: bold; margin: 0 0 6px; }
+  .album-meta { color: #666; font-size: 14px; display: flex; justify-content: space-between; }
+  .students-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .student-card { background: #fff; border-radius: 12px; padding: 16px; }
+  .student-name { color: #1E1E6F; font-weight: bold; margin: 0 0 6px; }
+  .student-meta { color: #666; font-size: 14px; }
+</style>
+
+<header class="header">
+  <img src="{% static 'images/Logo.png' %}" alt="College Logo" class="logo">
+  <div class="search-container">
+    <form class="search-bar" method="get" action="{% url 'search_all' %}">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-input" placeholder="Search albums, students, departments…" name="q" value="{{ q|default:'' }}">
+      <button class="search-btn" type="submit">Search</button>
+    </form>
+  </div>
+</header>
+
+<div class="container">
+  {% if q %}
+    <h2 class="section-title">Results for "{{ q }}"</h2>
+  {% else %}
+    <h2 class="section-title">Search</h2>
+  {% endif %}
+
+  <h3 class="section-title">Albums</h3>
+  {% if albums %}
+    <div class="albums-grid">
+      {% for album in albums %}
+        <a href="{% url 'album_detail' album.id %}" class="album-card">
+          <div class="album-cover">
+            {% if album.cover_photo %}
+              <img src="{{ album.cover_photo.url }}" alt="{{ album.title }}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+            {% else %}
+              <span>{{ album.title }}</span>
+            {% endif %}
+          </div>
+          <div class="album-title">{{ album.title }}</div>
+          <div class="album-meta">
+            <span>{{ album.department }} - {{ album.year }}</span>
+            <span>{{ album.photo_count }} photos</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="color:#fff;opacity:0.8;">No matching albums.</p>
+  {% endif %}
+
+  <h3 class="section-title">Students</h3>
+  {% if students %}
+    <div class="students-grid">
+      {% for s in students %}
+        <div class="student-card">
+          <div class="student-name">{{ s.full_name }}</div>
+          <div class="student-meta">ID: {{ s.school_id }}</div>
+          <div class="student-meta">{{ s.department }} - {{ s.year }}</div>
+          <div class="student-meta">Block {{ s.block }} | Section {{ s.section }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="color:#fff;opacity:0.8;">No matching students.</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+

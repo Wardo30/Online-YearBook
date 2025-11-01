@@ -1,0 +1,42 @@
+{% extends 'yearbook/base.html' %}
+{% load static %}
+{% block title %}Photo - {{ photo.album.title }}{% endblock %}
+{% block content %}
+<style>
+  body { background: #1f2253; }
+  .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+  .card { border-radius: 12px; overflow: hidden; }
+  .photo-img { width: 100%; height: auto; object-fit: contain; background: #000; }
+  .meta { color: #666; }
+</style>
+
+<div class="container">
+  <div class="mb-3">
+    <a href="{% url 'admin_photo_list' photo.album.id %}" class="btn btn-secondary">← Back to Album</a>
+  </div>
+
+  <div class="card">
+    <img src="{{ photo.image.url }}" alt="{% if photo.caption %}{{ photo.caption }}{% elif photo.student %}{{ photo.student.full_name }}{% else %}Photo{% endif %}" class="photo-img">
+    <div class="card-body">
+      <h5 class="card-title" style="margin-bottom:8px;">
+        {% if photo.student %}
+          {{ photo.student.full_name }}
+        {% else %}
+          {{ photo.caption|default:"Photo" }}
+        {% endif %}
+        {% if photo.is_featured %}
+          <span class="badge bg-warning text-dark" style="margin-left:6px;">FEATURED</span>
+        {% endif %}
+      </h5>
+      {% if photo.caption %}
+        <p class="card-text">{{ photo.caption }}</p>
+      {% endif %}
+      <p class="card-text meta">
+        <small class="text-muted">Album: {{ photo.album.title }} | Uploaded: {{ photo.created_at|date:"M d, Y" }}</small>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

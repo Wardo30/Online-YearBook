@@ -105,6 +105,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "yearbook" / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Media files (user uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # -----------------------------
 # AUTHENTICATION SETTINGS
 # -----------------------------

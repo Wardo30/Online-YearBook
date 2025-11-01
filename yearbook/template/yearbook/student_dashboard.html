@@ -421,7 +421,7 @@
         <img src="{{ student_profile.profile_photo.url }}" alt="Profile Photo" class="profile-photo">
       {% else %}
         <div class="profile-photo" style="background: linear-gradient(135deg, #5da2f2, #4a8bc7); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: bold;">
-          {{ user.first_name.0|default:user.username.0|upper }}
+          {% if user.first_name %}{{ user.first_name.0|upper }}{% elif user.username %}{{ user.username.0|upper }}{% else %}?{% endif %}
         </div>
       {% endif %}
     </div>
@@ -512,7 +512,7 @@
               <img src="{{ student.profile_photo.url }}" alt="{{ student.full_name }}" class="student-photo">
             {% else %}
               <div class="student-photo" style="background: linear-gradient(135deg, #5da2f2, #4a8bc7); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;">
-                {{ student.first_name.0 }}{{ student.last_name.0 }}
+                {% if student.first_name %}{{ student.first_name.0 }}{% endif %}{% if student.last_name %}{{ student.last_name.0 }}{% endif %}
               </div>
             {% endif %}
             <button class="student-name" onclick="event.stopPropagation(); viewStudent({{ student.id }})">{{ student.full_name }}</button>

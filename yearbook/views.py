@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db import models
 from django.urls import reverse
-from .models import Student, SearchHistory
+from .models import Student, Album, Photo, SearchHistory
 from .forms import SignUpForm, StudentForm, StudentSearchForm
 
 def landing(request):
@@ -48,7 +48,11 @@ def profile(request):
             
             # Handle profile photo upload
             if 'profile_photo' in request.FILES:
+                print(f"Profile photo uploaded: {request.FILES['profile_photo']}")
                 student_profile.profile_photo = request.FILES['profile_photo']
+                print(f"Profile photo saved to: {student_profile.profile_photo}")
+            else:
+                print("No profile photo in request.FILES")
             
             student_profile.save()
         else:
@@ -280,6 +284,42 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+# Unified search across albums and students
+@login_required
+def search_all(request):
+    """Search albums and students by a single query string.
+    Matches partial, case-insensitive values across multiple fields.
+    """
+    query = (request.GET.get('q') or request.GET.get('search') or '').strip()
+    albums = Album.objects.none()
+    students = Student.objects.none()
+
+    if query:
+        albums = Album.objects.filter(is_active=True).filter(
+            models.Q(title__icontains=query) |
+            models.Q(description__icontains=query) |
+            models.Q(department__icontains=query) |
+            models.Q(year__icontains=query)
+        ).order_by('-created_at')
+
+        students = Student.objects.filter(
+            models.Q(first_name__icontains=query) |
+            models.Q(middle_name__icontains=query) |
+            models.Q(last_name__icontains=query) |
+            models.Q(school_id__icontains=query) |
+            models.Q(email__icontains=query) |
+            models.Q(department__icontains=query) |
+            models.Q(block__icontains=query) |
+            models.Q(section__icontains=query)
+        ).order_by('first_name', 'last_name')
+
+    context = {
+        'q': query,
+        'albums': albums,
+        'students': students,
+    }
+    return render(request, 'yearbook/search_results.html', context)
+
 # Admin permission check
 def is_admin(user):
     return user.is_authenticated and user.is_staff
@@ -291,16 +331,24 @@ def admin_dashboard(request):
     # Get statistics
     total_students = Student.objects.count()
     total_users = User.objects.count()
+    total_albums = Album.objects.count()
+    total_photos = Photo.objects.count()
     recent_searches = SearchHistory.objects.count()
     
     # Get recent students
     recent_students = Student.objects.order_by('-created_at')[:5]
     
+    # Get recent albums
+    recent_albums = Album.objects.order_by('-created_at')[:5]
+    
     context = {
         'total_students': total_students,
         'total_users': total_users,
+        'total_albums': total_albums,
+        'total_photos': total_photos,
         'recent_searches': recent_searches,
         'recent_students': recent_students,
+        'recent_albums': recent_albums,
     }
     return render(request, 'yearbook/admin_dashboard.html', context)
 
@@ -426,3 +474,216 @@ def admin_bulk_operations(request):
         return redirect('admin_student_list')
     
     return redirect('admin_student_list')
+
+# Album Views
+@login_required
+def album_list(request):
+    """Display all available albums with optional search"""
+    search_query = request.GET.get('search', '').strip()
+    albums = Album.objects.filter(is_active=True)
+    
+    if search_query:
+        albums = albums.filter(
+            models.Q(title__icontains=search_query) |
+            models.Q(description__icontains=search_query) |
+            models.Q(department__icontains=search_query) |
+            models.Q(year__icontains=search_query)
+        )
+    
+    albums = albums.order_by('-created_at')
+    
+    context = {
+        'albums': albums,
+        'search': search_query,
+    }
+    return render(request, 'yearbook/album_list.html', context)
+
+@login_required
+def album_detail(request, album_id):
+    """Display photos in a specific album"""
+    album = get_object_or_404(Album, id=album_id, is_active=True)
+    photos = album.photos.all().order_by('-is_featured', '-created_at')
+    
+    # Paginate photos
+    paginator = Paginator(photos, 12)  # Show 12 photos per page
+    page_number = request.GET.get('page')
+    photos = paginator.get_page(page_number)
+    
+    context = {
+        'album': album,
+        'photos': photos,
+    }
+    return render(request, 'yearbook/album_detail.html', context)
+
+@login_required
+def photo_detail(request, photo_id):
+    """Display individual photo with details"""
+    photo = get_object_or_404(Photo, id=photo_id)
+    
+    context = {
+        'photo': photo,
+    }
+    return render(request, 'yearbook/photo_detail.html', context)
+
+# Admin Album Management Views
+@login_required
+@user_passes_test(is_admin)
+def admin_album_list(request):
+    """Admin view to manage all albums"""
+    albums = Album.objects.all().order_by('-created_at')
+    
+    context = {
+        'albums': albums,
+    }
+    return render(request, 'yearbook/admin_album_list.html', context)
+
+@login_required
+@user_passes_test(is_admin)
+def admin_album_add(request):
+    """Admin view to add new album"""
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        department = request.POST.get('department')
+        year = request.POST.get('year')
+        cover_photo = request.FILES.get('cover_photo')
+        
+        if title and department and year:
+            album = Album.objects.create(
+                title=title,
+                description=description,
+                department=department,
+                year=year,
+                cover_photo=cover_photo
+            )
+            messages.success(request, f'Album "{album.title}" created successfully!')
+            return redirect('admin_album_list')
+        else:
+            messages.error(request, 'Please fill in all required fields.')
+    
+    context = {
+        'title': 'Add New Album',
+        'departments': Student.DEPARTMENTS,
+        'years': Student.YEARS,
+    }
+    return render(request, 'yearbook/admin_album_form.html', context)
+
+@login_required
+@user_passes_test(is_admin)
+def admin_album_edit(request, album_id):
+    """Admin view to edit existing album"""
+    album = get_object_or_404(Album, id=album_id)
+    
+    if request.method == 'POST':
+        album.title = request.POST.get('title')
+        album.description = request.POST.get('description')
+        album.department = request.POST.get('department')
+        album.year = request.POST.get('year')
+        album.is_active = request.POST.get('is_active') == 'on'
+        
+        if request.FILES.get('cover_photo'):
+            album.cover_photo = request.FILES.get('cover_photo')
+        
+        album.save()
+        messages.success(request, f'Album "{album.title}" updated successfully!')
+        return redirect('admin_album_list')
+    
+    context = {
+        'title': 'Edit Album',
+        'album': album,
+        'departments': Student.DEPARTMENTS,
+        'years': Student.YEARS,
+    }
+    return render(request, 'yearbook/admin_album_form.html', context)
+
+@login_required
+@user_passes_test(is_admin)
+def admin_album_delete(request, album_id):
+    """Admin view to delete album"""
+    album = get_object_or_404(Album, id=album_id)
+    
+    if request.method == 'POST':
+        album_title = album.title
+        album.delete()
+        messages.success(request, f'Album "{album_title}" deleted successfully!')
+        return redirect('admin_album_list')
+    
+    context = {
+        'album': album,
+    }
+    return render(request, 'yearbook/admin_album_delete.html', context)
+
+@login_required
+@user_passes_test(is_admin)
+def admin_photo_list(request, album_id):
+    """Admin view to manage photos in an album"""
+    album = get_object_or_404(Album, id=album_id)
+    photos = album.photos.all().order_by('-is_featured', '-created_at')
+    
+    context = {
+        'album': album,
+        'photos': photos,
+    }
+    return render(request, 'yearbook/admin_photo_list.html', context)
+
+@login_required
+@user_passes_test(is_admin)
+def admin_photo_add(request, album_id):
+    """Admin view to add photos to an album"""
+    album = get_object_or_404(Album, id=album_id)
+    
+    if request.method == 'POST':
+        images = request.FILES.getlist('images')
+        student_id = request.POST.get('student')
+        caption = request.POST.get('caption')
+        is_featured = request.POST.get('is_featured') == 'on'
+        
+        if images:
+            student = None
+            if student_id:
+                try:
+                    student = Student.objects.get(id=student_id)
+                except Student.DoesNotExist:
+                    pass
+            
+            for image in images:
+                Photo.objects.create(
+                    album=album,
+                    student=student,
+                    image=image,
+                    caption=caption,
+                    is_featured=is_featured,
+                    uploaded_by=request.user
+                )
+            
+            messages.success(request, f'{len(images)} photo(s) added to "{album.title}" successfully!')
+            return redirect('admin_photo_list', album_id=album.id)
+        else:
+            messages.error(request, 'Please select at least one image.')
+    
+    # Get students for dropdown
+    students = Student.objects.all().order_by('first_name', 'last_name')
+    
+    context = {
+        'title': f'Add Photos to {album.title}',
+        'album': album,
+        'students': students,
+    }
+    return render(request, 'yearbook/admin_photo_form.html', context)
+
+@login_required
+@user_passes_test(is_admin)
+def admin_photo_delete(request, photo_id):
+    """Admin view to delete photo"""
+    photo = get_object_or_404(Photo, id=photo_id)
+    album = photo.album
+    
+    if request.method == 'POST':
+        photo.delete()
+        messages.success(request, 'Photo deleted successfully!')
+        return redirect('admin_photo_list', album_id=album.id)
+    
+    context = {
+        'photo': photo,
+    }
+    return render(request, 'yearbook/admin_photo_delete.html', context)

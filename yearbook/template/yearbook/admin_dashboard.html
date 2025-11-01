@@ -227,7 +227,7 @@
     <nav class="nav-links">
       <a href="{% url 'admin_dashboard' %}" class="nav-link">DASHBOARD</a>
       <a href="{% url 'admin_student_list' %}" class="nav-link">STUDENTS</a>
-      <a href="#" class="nav-link">SETTINGS</a>
+      <a href="{% url 'admin_album_list' %}" class="nav-link">ALBUMS</a>
       <a href="{% url 'logout' %}" class="nav-link">LOGOUT</a>
     </nav>
   </header>
@@ -245,8 +245,12 @@
         <div class="stat-label">Registered Users</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number">{{ recent_searches }}</div>
-        <div class="stat-label">Total Searches</div>
+        <div class="stat-number">{{ total_albums }}</div>
+        <div class="stat-label">Total Albums</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{ total_photos }}</div>
+        <div class="stat-label">Total Photos</div>
       </div>
     </div>
 
@@ -262,19 +266,27 @@
           <span class="action-icon">📋</span>
           <span>Manage Students</span>
         </a>
-        <a href="#" class="action-btn secondary">
+        <a href="{% url 'admin_album_add' %}" class="action-btn">
+          <span class="action-icon">📸</span>
+          <span>Add Album</span>
+        </a>
+        <a href="{% url 'admin_album_list' %}" class="action-btn secondary">
+          <span class="action-icon">📚</span>
+          <span>Manage Albums</span>
+        </a>
+        <a href="{% url 'admin_student_list' %}" class="action-btn secondary">
           <span class="action-icon">📊</span>
           <span>View Reports</span>
         </a>
-        <a href="#" class="action-btn secondary">
+        <a href="/admin/" class="action-btn secondary">
           <span class="action-icon">⚙️</span>
-          <span>System Settings</span>
+          <span>Django Admin</span>
         </a>
-        <a href="#" class="action-btn danger">
+        <a href="{% url 'admin_student_list' %}" class="action-btn danger">
           <span class="action-icon">🗑️</span>
           <span>Bulk Operations</span>
         </a>
-        <a href="#" class="action-btn secondary">
+        <a href="{% url 'admin_student_list' %}" class="action-btn secondary">
           <span class="action-icon">📤</span>
           <span>Export Data</span>
         </a>
@@ -305,6 +317,35 @@
           <p>No students added yet.</p>
           <a href="{% url 'admin_student_add' %}" class="action-btn" style="display: inline-flex; width: auto; padding: 10px 20px;">
             Add First Student
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Recent Albums -->
+    <div class="recent-students">
+      <h2 class="section-title">Recent Albums Added</h2>
+      {% if recent_albums %}
+        {% for album in recent_albums %}
+          <div class="student-item">
+            {% if album.cover_photo %}
+              <img src="{{ album.cover_photo.url }}" alt="{{ album.title }}" class="student-photo">
+            {% else %}
+              <div class="student-photo" style="background: linear-gradient(135deg, #FDD835, #FFC107); display: flex; align-items: center; justify-content: center; color: #2C3E50; font-weight: bold;">
+                📸
+              </div>
+            {% endif %}
+            <div class="student-info">
+              <h6>{{ album.title }}</h6>
+              <p>{{ album.department }} - {{ album.year }} | {{ album.photo_count }} photos</p>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div style="text-align: center; color: #BDC3C7; padding: 40px;">
+          <p>No albums added yet.</p>
+          <a href="{% url 'admin_album_add' %}" class="action-btn" style="display: inline-flex; width: auto; padding: 10px 20px;">
+            Add First Album
           </a>
         </div>
       {% endif %}

@@ -1,0 +1,342 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Albums | Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #2C3E50;
+      min-height: 100vh;
+    }
+    
+    /* Header */
+    .header {
+      background: #2C3E50;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #FDD835;
+    }
+    
+    .logo {
+      width: 80px;
+      height: 80px;
+    }
+    
+    .header-title {
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      margin: 0;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+    
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      color: #FDD835;
+    }
+    
+    /* Main Content */
+    .main-content {
+      padding: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .section-title {
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+    
+    /* Action Bar */
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .btn-add {
+      background: #27AE60;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-add:hover {
+      background: #229954;
+      color: white;
+      text-decoration: none;
+    }
+    
+    /* Albums Grid */
+    .albums-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .album-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .album-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .album-cover {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      object-fit: cover;
+      background: linear-gradient(135deg, #87CEEB, #98FB98);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .album-title {
+      color: #FDD835;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .album-description {
+      color: #BDC3C7;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    
+    .album-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #BDC3C7;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    
+    .photo-count {
+      background: #FDD835;
+      color: #2C3E50;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+    
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .status-active {
+      background: #27AE60;
+      color: white;
+    }
+    
+    .status-inactive {
+      background: #E74C3C;
+      color: white;
+    }
+    
+    .album-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    
+    .btn-action {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .btn-view {
+      background: #3498DB;
+      color: white;
+    }
+    
+    .btn-edit {
+      background: #F39C12;
+      color: white;
+    }
+    
+    .btn-photos {
+      background: #9B59B6;
+      color: white;
+    }
+    
+    .btn-delete {
+      background: #E74C3C;
+      color: white;
+    }
+    
+    .btn-action:hover {
+      opacity: 0.8;
+      text-decoration: none;
+      color: white;
+    }
+    
+    /* Messages */
+    .alert {
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+      }
+      
+      .action-bar {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+      }
+      
+      .albums-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <img src="{% static 'images/Logo.png' %}" alt="College Logo" class="logo">
+    
+    <h1 class="header-title">Manage Albums</h1>
+    
+    <nav class="nav-links">
+      <a href="{% url 'admin_dashboard' %}" class="nav-link">DASHBOARD</a>
+      <a href="{% url 'admin_student_list' %}" class="nav-link">STUDENTS</a>
+      <a href="{% url 'admin_album_list' %}" class="nav-link" style="color: #FDD835;">ALBUMS</a>
+      <a href="/admin/" class="nav-link">SETTINGS</a>
+      <a href="{% url 'logout' %}" class="nav-link">LOGOUT</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Messages -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <h2 class="section-title">Yearbook Albums</h2>
+      <a href="{% url 'admin_album_add' %}" class="btn-add">+ Add New Album</a>
+    </div>
+
+    <!-- Albums Grid -->
+    <div class="albums-grid">
+      {% for album in albums %}
+        <div class="album-card">
+          <div class="album-cover">
+            {% if album.cover_photo %}
+              <img src="{{ album.cover_photo.url }}" alt="{{ album.title }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+            {% else %}
+              <span>{{ album.title }}</span>
+            {% endif %}
+          </div>
+          <h3 class="album-title">{{ album.title }}</h3>
+          {% if album.description %}
+            <p class="album-description">{{ album.description }}</p>
+          {% endif %}
+          <div class="album-meta">
+            <span>{{ album.department }} - {{ album.year }}</span>
+            <span class="photo-count">{{ album.photo_count }} photos</span>
+          </div>
+          <div class="album-meta">
+            <span class="status-badge {% if album.is_active %}status-active{% else %}status-inactive{% endif %}">
+              {% if album.is_active %}Active{% else %}Inactive{% endif %}
+            </span>
+            <span>{{ album.created_at|date:"M d, Y" }}</span>
+          </div>
+          <div class="album-actions">
+            <a href="{% url 'album_detail' album.id %}" class="btn-action btn-view">View</a>
+            <a href="{% url 'admin_photo_list' album.id %}" class="btn-action btn-photos">Photos</a>
+            <a href="{% url 'admin_album_edit' album.id %}" class="btn-action btn-edit">Edit</a>
+            <a href="{% url 'admin_album_delete' album.id %}" class="btn-action btn-delete">Delete</a>
+          </div>
+        </div>
+      {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; color: white; padding: 40px;">
+          <h3>No albums created yet.</h3>
+          <p>Create your first yearbook album to get started!</p>
+          <a href="{% url 'admin_album_add' %}" class="btn-add">Create First Album</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    // Add any JavaScript functionality here
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add click animations to action buttons
+      const actionButtons = document.querySelectorAll('.btn-action');
+      actionButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            this.style.transform = '';
+          }, 150);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

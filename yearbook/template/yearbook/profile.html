@@ -679,8 +679,8 @@
     }
     
     function viewAlbum(albumName) {
-      alert('Viewing album: ' + albumName);
-      // You can implement: window.location.href = '/album/' + albumName + '/';
+      // Redirect to album list page
+      window.location.href = "{% url 'album_list' %}";
     }
     
     function performSearch() {
